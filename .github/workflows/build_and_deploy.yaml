@@ -1,0 +1,34 @@
+# name: Build and deploy
+# on:
+#   pull_request:
+#   push: { branches: main }
+# 
+# jobs:
+#   deploy:
+#     runs-on: 'ubuntu-latest'
+#     steps:
+#       - name: 'Checkout code'
+#         uses: 'actions/checkout@v3'
+# 
+#       - name: 'Install the gcloud cli'
+#         uses: 'google-github-actions/auth@v2'
+#         with:
+#           project_id: ''
+#           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+# 
+#       - name: 'Build and push the docker image'
+#         env:
+#           GOOGLE_PROJECT: ''
+#           run: |
+#             gcloud auth configure-docker us-centrail-docker.pkg.dev
+#             docker build -t <your google artifactory>/<the image name>:<tag name> <your Dockerfile location>
+#             docker push <your google artifactory>/<the image name>:<tag name>
+# 
+#       - name: 'Deploy to google cloud run'
+#         uses: 'google-github-actions/deploy-cloudrun@v2'
+#         with:
+#           service: 'hello-cloud-run'
+#           image: 'gcr.io/cloudrun/hello'
+# 
+#       - name: 'Use output'
+#         run: 'curl "${{ steps.deploy.outputs.url }}"'
